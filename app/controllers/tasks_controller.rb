@@ -19,7 +19,7 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
 
     if @task.save
-      redirect_to @task, notice: "Task was successfully created."
+      redirect_to tasks_path, notice: "Task was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -44,6 +44,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:name, :content)
+      params.require(:task).permit(:title, :content)
     end
 end

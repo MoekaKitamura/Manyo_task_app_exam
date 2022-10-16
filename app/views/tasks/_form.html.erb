@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
   </div>
 
   <div class="field">
@@ -22,6 +22,7 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <% task_button_id = controller.action_name == "new" ? "create-task" : "update-task" %>
+    <%= form.submit id: task_button_id %>
   </div>
 <% end %>

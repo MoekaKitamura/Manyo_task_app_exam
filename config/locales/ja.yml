@@ -13,6 +13,19 @@ ja:
         title: タイトル
         content: 内容
         created_at: 作成日時
+        deadline_on: 終了期限
+        priority: 優先度
+        status: ステータス
+  enum:
+    task:
+      priority:
+        low: 低
+        middle: 中
+        high: 高
+      status:
+        todo: 未着手
+        doing: 着手中
+        done: 完了
   nav:
     tasks_index: タスク一覧
     new_task: タスクを登録する

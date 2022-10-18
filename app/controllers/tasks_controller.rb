@@ -3,12 +3,24 @@ class TasksController < ApplicationController
 
   def index
     if params[:sort_deadline_on]
-      @tasks = Task.order(:deadline_on).page(params[:page]).per(10)
+      tasks = Task.order(:deadline_on)
     elsif params[:sort_priority]
-      @tasks = Task.order(priority: :desc).page(params[:page]).per(10)
+      tasks = Task.order(priority: :desc)
     else
-      @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+      tasks = Task.order(created_at: :desc)
     end
+    
+    if params[:search].present?
+      if params[:search][:status].present? && params[:search][:title].present?
+        tasks = tasks.where(status: params[:search][:status]).where("title LIKE ?", "%#{params[:search][:title]}%")
+      elsif params[:search][:status].present?
+        tasks = tasks.where(status: params[:search][:status])
+      elsif params[:search][:title].present?
+        tasks = tasks.where("title LIKE ?", "%#{params[:search][:title]}%")
+      end
+    end
+    
+    @tasks = tasks.page(params[:page]).per(10)
   end
 
   def show

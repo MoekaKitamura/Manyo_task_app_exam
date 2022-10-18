@@ -2,6 +2,17 @@
 
 <h1><%= t('.title') %></h1>
 
+<div class="search_form_area">
+  <%= form_with(url: tasks_path, method: :get, scope: :search, local: true) do |f| %>
+    <%= f.label :status, Task.human_attribute_name(:status) %>
+    <%= f.select :status, Task.statuses.map { |k, _v| [t("enum.task.status.#{k}"), k] }, include_blank: true %>
+    <br>
+    <%= f.label :title, Task.human_attribute_name(:title) %>
+    <%= f.text_field :title %>
+    <%= f.submit "検索", id: "search_task" %>
+  <% end %>
+</div>
+
 <table>
   <thead>
     <tr>

@@ -2,7 +2,13 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
   def index
-    @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+    if params[:sort_deadline_on]
+      @tasks = Task.order(:deadline_on).page(params[:page]).per(10)
+    elsif params[:sort_priority]
+      @tasks = Task.order(priority: :desc).page(params[:page]).per(10)
+    else
+      @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+    end
   end
 
   def show

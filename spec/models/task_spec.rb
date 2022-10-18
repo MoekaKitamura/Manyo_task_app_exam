@@ -28,7 +28,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
       end
     end
 
-    context 'タスクの修了期限が空文字の場合' do
+    context 'タスクの終了期限が空文字の場合' do
       it 'バリデーションエラーが発生' do
         task = Task.create(
           title: 'タスク1',

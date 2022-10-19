@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2022_10_19_013917) do
     t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest", null: false
-    t.boolean "admin", null: false
+    t.boolean "admin", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "unique_emails", unique: true

@@ -11,10 +11,14 @@
 
   <body>
     <% if logged_in? %>
-      <p><strong><%= current_user.name %></strong>さんでログイン中</p>
+      <p><strong><%= "🟠" if current_user.admin? %> <%= current_user.name %></strong>さんでログイン中</p>
     <% end %>
     <ul>
       <% if logged_in? %>
+        <% if current_user.admin? %>
+          <li><%= link_to "ユーザ一覧", admin_users_path, id: "users-index" %></li>
+          <li><%= link_to "ユーザを追加する", new_admin_user_path, id: "add-user" %></li>
+        <% end %>
         <li><%= link_to t('nav.tasks_index'), tasks_path, id: "tasks-index" %></li>
         <li><%= link_to t('nav.new_task'), new_task_path, id: "new-task" %></li>
         <li><%= link_to "アカウント詳細", user_path(current_user.id), id: "my-account" %></li>

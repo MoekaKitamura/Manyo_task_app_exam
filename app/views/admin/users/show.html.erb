@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<h1>ユーザ詳細ページ</h1>
+
+<p>
+  <strong><%= User.human_attribute_name(:name) %>:</strong>
+  <%= @user.name %>
+</p>
+
+<p>
+  <strong><%= User.human_attribute_name(:email) %>:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong><%= User.human_attribute_name(:admin) %>:</strong>
+  <%= @user.admin ? "あり" : "なし" %>
+</p>
+
+<%= link_to t('common.back'), admin_users_path, id: "back" %>

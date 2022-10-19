@@ -38,7 +38,7 @@ class Admin::UsersController < ApplicationController
     if @user.destroy
       redirect_to admin_users_path, notice: 'ユーザを削除しました'
     else
-      redirect_to admin_users_path, alert: '管理者が0人になるため削除できません'
+      redirect_to admin_users_path, alert: '管理者権限を持つアカウントが0件になるため削除できません'
     end
   end
 

@@ -19,7 +19,7 @@ class User < ApplicationRecord
   private
     def check_admin_exist_for_update
       if self.is_only_one_admin? && self.will_save_change_to_attribute?(:admin)
-        errors.add(:base, "管理者が0人になるため権限を変更できません")
+        errors.add(:base, "管理者権限を持つアカウントが0件になるため更新できません")
         throw(:abort)
       end 
     end

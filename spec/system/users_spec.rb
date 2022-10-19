@@ -49,7 +49,7 @@ RSpec.describe 'ユーザ管理機能', type: :system do
 
       it '他人の詳細画面にアクセスすると、タスク一覧画面に遷移する' do
         visit user_path(another_user)
-        expect(page).to have_content "アクセス権限がありません"
+        expect(page).to have_content "本人以外アクセスできません"
         expect(page).to have_content "タスク一覧ページ"
       end
 

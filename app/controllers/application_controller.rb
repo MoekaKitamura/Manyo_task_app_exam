@@ -18,6 +18,6 @@ class ApplicationController < ActionController::Base
     end
     
     def current_user_required(user)
-      redirect_to tasks_path, alert: "アクセス権限がありません" unless current_user ==  user
+      redirect_to tasks_path, alert: "本人以外アクセスできません" unless current_user ==  user
     end
 end

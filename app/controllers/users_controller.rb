@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :already_logged_in, only: %i(new create)
+  skip_before_action :login_required, only: %i(new create)
+  before_action :set_user, only: %i(show edit update destroy)
 
   def index
     @users = User.all
@@ -19,6 +21,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      log_in(@user)
       redirect_to @user, notice: 'アカウントを登録しました'
     else
       render :new

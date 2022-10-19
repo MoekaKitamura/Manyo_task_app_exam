@@ -1,7 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe 'タスク管理機能', type: :system do
+
+  let!(:user) { FactoryBot.create(:user) }
+
   describe '登録機能' do
+    before do
+      visit new_session_path
+      fill_in "メールアドレス", with: user.email
+      fill_in "パスワード", with: "password"
+      click_button "ログイン"
+    end
+
     context 'タスクを登録した場合' do
       it '登録したタスクが表示される' do
         visit new_task_path
@@ -17,11 +27,15 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '一覧表示機能' do
-    let!(:first_task) { FactoryBot.create(:task, title: "first_task", created_at: Time.zone.now.ago(3.days)) }
-    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task", created_at: Time.zone.now.ago(2.days)) }
-    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task", created_at: Time.zone.now.ago(1.days)) }
+    let!(:first_task) { FactoryBot.create(:task, title: "first_task", created_at: Time.zone.now.ago(3.days), user: user) }
+    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task", created_at: Time.zone.now.ago(2.days), user: user) }
+    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task", created_at: Time.zone.now.ago(1.days), user: user) }
 
     before do
+      visit new_session_path
+      fill_in :session_email, with: user.email
+      fill_in :session_password, with: "password"
+      click_button "ログイン"
       visit tasks_path
     end
 
@@ -35,7 +49,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
 
     context '新たにタスクを作成した場合' do
-      let!(:new_task) { FactoryBot.create(:task, title: "new_task") }
+      let!(:new_task) { FactoryBot.create(:task, title: "new_task", user: user) }
 
       it '新しいタスクが一番上に表示される' do
         visit current_path
@@ -48,6 +62,7 @@ RSpec.describe 'タスク管理機能', type: :system do
       context 'テーブルヘッダーの「終了期限」をクリックした際場合' do
         it "終了期限昇順に並び替えられたタスク一覧が表示される" do
           click_link "終了期限"
+          sleep 1.0
           task_list = all('html body tbody tr')
           expect(task_list[0]).to have_content 'third_task'
           expect(task_list[1]).to have_content 'second_task'
@@ -58,6 +73,7 @@ RSpec.describe 'タスク管理機能', type: :system do
       context 'テーブルヘッダーの「優先度」をクリックした場合' do
         it "優先度の高い順に並び替えられたタスク一覧が表示される" do
           click_link "優先度"
+          sleep 1.0
           task_list = all('html body tbody tr')
           expect(task_list[0]).to have_content 'second_task'
           expect(task_list[1]).to have_content 'first_task'
@@ -105,8 +121,15 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '詳細表示機能' do
+    before do
+      visit new_session_path
+      fill_in :session_email, with: user.email
+      fill_in :session_password, with: "password"
+      click_button "ログイン"
+    end
+
     context '任意のタスク詳細画面に遷移した場合' do
-      let(:task) { FactoryBot.create(:task, title: "書類作成") }
+      let(:task) { FactoryBot.create(:task, title: "書類作成", user: user) }
 
       it 'そのタスクの内容が表示される' do
         visit task_path(task)

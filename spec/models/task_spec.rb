@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'タスクモデル機能', type: :model do
+
+  let!(:user) { FactoryBot.create(:user) }
+
   describe 'バリデーションのテスト' do
     context 'タスクのタイトルが空文字の場合' do
       it 'バリデーションエラーが発生' do
@@ -10,6 +13,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
           deadline_on: Date.today,
           priority: 'low',
           status: 'done',
+          user_id: user.id
         )
         expect(task).not_to be_valid
       end
@@ -23,6 +27,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
           deadline_on: Date.today,
           priority: 'low',
           status: 'done',
+          user_id: user.id
         )
         expect(task).not_to be_valid
       end
@@ -36,6 +41,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
           deadline_on: '',
           priority: 'low',
           status: 'done',
+          user_id: user.id
         )
         expect(task).not_to be_valid
       end
@@ -49,6 +55,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
           deadline_on: Date.today,
           priority: '',
           status: 'done',
+          user_id: user.id
         )
         expect(task).not_to be_valid
       end
@@ -62,6 +69,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
           deadline_on: Date.today,
           priority: 'low',
           status: '',
+          user_id: user.id
         )
         expect(task).not_to be_valid
       end
@@ -75,6 +83,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
           deadline_on: Date.today,
           priority: 'low',
           status: 'done',
+          user_id: user.id
         )
         expect(task).to be_valid
       end
@@ -82,9 +91,9 @@ RSpec.describe 'タスクモデル機能', type: :model do
   end
 
   describe '検索機能' do
-    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title') }
-    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title") }
-    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title") }
+    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', user: user) }
+    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", user: user) }
+    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", user: user) }
 
     context 'scopeメソッドでタイトルのあいまい検索をした場合' do
       it "検索ワードを含むタスクが絞り込まれる" do

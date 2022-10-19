@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
     end
 
     def admin_required
-      redirect_to tasks_path, notice: "管理者以外はアクセスできません" unless current_user.admin
-  end
+      redirect_to tasks_path, alert: "管理者以外はアクセスできません" unless current_user.admin
+    end
+    
+    def current_user_required(user)
+      redirect_to tasks_path, alert: "アクセス権限がありません" unless current_user ==  user
+    end
 end

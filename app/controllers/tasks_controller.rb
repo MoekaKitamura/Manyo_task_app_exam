@@ -3,11 +3,11 @@ class TasksController < ApplicationController
 
   def index
     if params[:sort_deadline_on]
-      tasks = Task.sort_deadline_on.sort_created_at
+      tasks = current_user.tasks.sort_deadline_on.sort_created_at
     elsif params[:sort_priority]
-      tasks = Task.sort_priority.sort_created_at
+      tasks = current_user.tasks.sort_priority.sort_created_at
     else
-      tasks = Task.sort_created_at
+      tasks = current_user.tasks.sort_created_at
     end
     
     if params[:search].present?
@@ -24,6 +24,7 @@ class TasksController < ApplicationController
   end
 
   def show
+    current_user_required(@task.user)
   end
 
   def new
@@ -31,10 +32,12 @@ class TasksController < ApplicationController
   end
 
   def edit
+    current_user_required(@task.user)
   end
 
   def create
     @task = Task.new(task_params)
+    @task.user = current_user
 
     if @task.save
       redirect_to tasks_path, notice: t('.created')

@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i(show edit update)
 
   def show
+    current_user_required(@user)
   end
 
   def new
@@ -11,6 +12,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    current_user_required(@user)
   end
 
   def create

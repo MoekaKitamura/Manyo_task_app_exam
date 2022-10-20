@@ -46,6 +46,6 @@
 
   <div class="actions">
     <% task_button_id = controller.action_name == "new" ? "create-task" : "update-task" %>
-    <%= form.submit id: task_button_id %>
+    <%= form.submit id: task_button_id, class: "btn btn-dark" %>
   </div>
 <% end %>

@@ -42,7 +42,7 @@ RSpec.describe 'ユーザ管理機能', type: :system do
       end
 
       it '自分の詳細画面にアクセスできる' do
-        click_link "アカウント詳細"
+        visit user_path(user)
         expect(page).to have_content "アカウント詳細ページ"
         expect(page).to have_content user.name
       end
@@ -55,7 +55,6 @@ RSpec.describe 'ユーザ管理機能', type: :system do
 
       it 'ログアウトするとログイン画面に遷移し、「ログアウトしました」というメッセージが表示される' do
         click_link "ログアウト"
-        page.driver.browser.switch_to.alert.accept
         expect(page).to have_content "ログアウトしました"
         expect(page).to have_content "ログインページ"
       end
@@ -75,7 +74,7 @@ RSpec.describe 'ユーザ管理機能', type: :system do
       end
 
       it 'ユーザ一覧画面にアクセスできる' do
-        click_link "ユーザ一覧"
+        visit admin_users_path
         expect(page).to have_content "ユーザ一覧ページ"
       end
 

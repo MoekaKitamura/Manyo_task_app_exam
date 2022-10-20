@@ -29,15 +29,18 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    @labels = current_user.labels
   end
 
   def edit
     current_user_required(@task.user)
+    @labels = current_user.labels
   end
 
   def create
     @task = Task.new(task_params)
     @task.user = current_user
+    @task.labels << current_user.labels.where(id: params[:task][:label_ids])
 
     if @task.save
       redirect_to tasks_path, notice: t('.created')
@@ -47,6 +50,9 @@ class TasksController < ApplicationController
   end
 
   def update
+    @task.labels.clear
+    @task.labels << current_user.labels.where(id: params[:task][:label_ids])
+
     if @task.update(task_params)
       redirect_to tasks_path, notice: t('.updated')
     else

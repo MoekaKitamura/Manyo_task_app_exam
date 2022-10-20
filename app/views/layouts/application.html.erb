@@ -42,10 +42,20 @@
       </div>
     </nav>
 
-    <div class='container'>
-      <% if logged_in? %>
-        <p><strong><%= "🟠" if current_user.admin? %> <%= current_user.name %></strong>さんでログイン中</p>
-      <% end %>
+    <% if logged_in? %>
+      <div class="m-3">
+        <%= "🟠" if current_user.admin? %>
+        <strong><%= current_user.name %></strong>さんでログイン中
+      </div>
+    <% end %>
+
+    <% if notice.present? %>
+      <p id="notice" class="alert alert-success m-3"><%= notice %></p>
+    <% elsif alert.present? %>
+      <p id="alert" class="alert alert-danger m-3"><%= alert %></p>
+    <% end %>
+
+    <div class='container mt-5'>
       <%= yield %>
     </div>
   </body>

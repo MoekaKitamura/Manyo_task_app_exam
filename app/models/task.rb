@@ -1,5 +1,6 @@
 class Task < ApplicationRecord
   belongs_to :user
+  has_and_belongs_to_many :labels
 
   validates :title, presence: true
   validates :content, presence: true
@@ -16,4 +17,5 @@ class Task < ApplicationRecord
 
   scope :search_status, -> (status) { where(status: status) }
   scope :search_title, -> (title) { where("title LIKE ?", "%#{title}%") }
+  scope :search_label_id, -> (label_id) { joins(:labels).where(labels: { id: label_id }).distinct }
 end

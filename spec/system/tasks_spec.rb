@@ -94,6 +94,7 @@ RSpec.describe 'タスク管理機能', type: :system do
           expect(task_list.first).not_to have_content "third_task"
         end
       end
+
       context 'ステータスで検索した場合' do
         it "検索したステータスに一致するタスクのみ表示される" do
           select "完了", from: "search[status]"
@@ -105,10 +106,32 @@ RSpec.describe 'タスク管理機能', type: :system do
           expect(task_list.first).to have_content "third_task"
         end
       end
+
       context 'タイトルとステータスで検索した場合' do
         it "検索ワードをタイトルに含み、かつステータスに一致するタスクのみ表示される" do
           fill_in "タイトル", with: "first"
           select "未着手", from: "search[status]"
+          click_button "検索"
+          task_list = all('body tbody tr')
+          expect(task_list.count).to eq 1
+          expect(task_list.first).to have_content "first_task"
+          expect(task_list.first).not_to have_content "second_task"
+          expect(task_list.first).not_to have_content "third_task"
+        end
+      end
+
+      context 'ラベルで検索をした場合' do
+        let!(:label_1) { FactoryBot.create(:label, name: "ラベル１", user: user) }
+        let!(:label_2) { FactoryBot.create(:label, name: "ラベル２", user: user) }
+        
+        before do
+          first_task.labels << label_1
+          second_task.labels << label_2
+        end
+
+        it "そのラベルの付いたタスクがすべて表示される" do
+          visit current_path
+          select label_1.name, from: "search[label_id]"
           click_button "検索"
           task_list = all('body tbody tr')
           expect(task_list.count).to eq 1
